@@ -54,5 +54,54 @@ function handleBuyTicket(pur) {
     alert("No more tickets!");
     pur.target.classList.add("sold-out");
     pur.target.classList.remove("orange");
-  }
+
+    fetch(url+movies.id,{
+        method: "PATCH",
+        headers: requestHeaders,    
+        body: JSON.stringify(requestBody)
+    })
+    .then (res => res.json())
+    .then (data => {
+        updateDom(data);
+
+        let numberOfTickets = (data.capacity - data.tickets_sold)
+
+        if(!numberOfTickets > 0)
+        { grabMovie()
+        }
+
+        let  RequestBodyTickets =  {
+            "film_id": data.id,
+            "number_of_tickets": numberOfTickets
+         }
+
+        fetch("http://localhost:3000/tickets",{
+            method: "POST",
+            headers: requestHeaders,    
+            body: JSON.stringify(RequestBodyTickets)
+        })
+        .then (res => res.json())
+        .then(data => data)
+        .catch (e => console.log(e.message));
+
+    })
+    .catch (e => console.log(e.message));
 }
+function deleteMovie(movie){
+    let requestHeaders = {
+        "Content-Type": "application/json"
+    }
+    let requestBody = {
+        "id": movie.id
+    }
+    fetch(url+movie.id, {
+        method: "DELETE",
+        headers: requestHeaders,    
+        body: JSON.stringify(requestBody)
+    })
+    .then (res => res.json())
+    .then (data => grabMovie())
+    .catch (e => console.log(e.message));
+}
+  }
+
