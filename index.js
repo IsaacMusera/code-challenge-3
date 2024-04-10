@@ -1,4 +1,4 @@
-const baseApiUrl = 'https://json-server-wbsb.onrender.com';
+const baseApiUrl = 'http://localhost:3000';
 const filmsUrl = `${baseApiUrl}/films`;
 const ticketsUrl = `${baseApiUrl}/tickets`;
 
@@ -75,7 +75,7 @@ function handleBuyTicket(pur) {
             "number_of_tickets": numberOfTickets
          }
 
-        fetch("http://localhost:3000/tickets",{
+        fetch(filmsUrl,{
             method: "POST",
             headers: requestHeaders,    
             body: JSON.stringify(RequestBodyTickets)
